@@ -21,18 +21,62 @@ window.Vue = require('vue');
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import * as VueGoogleMaps from 'vue2-google-maps'
+import axios from 'axios'
 
+import Navbar from './layouts/Navbar'
 import Index from './components/Index'
+import Result from './components/Result'
 import Detail from './components/Detail'
+
+Vue.prototype.$http = axios
 
 Vue.use(VueRouter)
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: 'AIzaSyA38N74y_xGwSV0bI_36OIXDdH-corZO5A',
+        libraries: 'places', // This is required if you use the Autocomplete plugin
+        // OR: libraries: 'places,drawing'
+        // OR: libraries: 'places,drawing,visualization'
+        // (as you require)
 
-const routes = [
-    { path: '/', component: Index },
-    { path: '/detail', component: Detail }
-  ]
+        //// If you want to set the version, you can do so:
+        // v: '3.26',
+    },
+
+    //// If you intend to programmatically custom event listener code
+    //// (e.g. `this.$refs.gmap.$on('zoom_changed', someFunc)`)
+    //// instead of going through Vue templates (e.g. `<GmapMap @zoom_changed="someFunc">`)
+    //// you might need to turn this on.
+    // autobindAllEvents: false,
+
+    //// If you want to manually install components, e.g.
+    //// import {GmapMarker} from 'vue2-google-maps/src/components/marker'
+    //// Vue.component('GmapMarker', GmapMarker)
+    //// then disable the following:
+    // installComponents: true,
+})
+
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('app-navbar', Navbar);
+
+const routes = [{
+        path: '/',
+        name: 'Index',
+        component: Index
+    },
+    {
+        path: '/detail/:id',
+        name: 'Detail',
+        component: Detail
+    },
+    {
+        path: '/result/:id',
+        name: 'Result',
+        component: Result
+    }
+]
 
 const router = new VueRouter({
     routes // short for `routes: routes`
@@ -45,4 +89,4 @@ const router = new VueRouter({
 
 const app = new Vue({
     router
-  }).$mount('#app')
+}).$mount('#app')

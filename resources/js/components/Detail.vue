@@ -28,23 +28,13 @@
               <button class="btn btn-outline-primary btn-xs">LIHAT KONTAK</button>
             </div>
           </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+          <ul class="list-group list-group-flush" v-for="n in listSize" :key="n.index">
+            <li class="list-group-item" v-if="n.price">
               <div class="row">
-                <div class="col font-weight-bold">Size 30</div>
-                <div class="col">Rp 91.000</div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col font-weight-bold">Size 30</div>
-                <div class="col">Rp 91.000</div>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col font-weight-bold">Size 30</div>
-                <div class="col">Rp 91.000</div>
+                <div class="col font-weight-bold">{{ n.name }}</div>
+                <div
+                  class="col"
+                >Rp {{ n.price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") }}</div>
               </div>
             </li>
           </ul>
@@ -77,108 +67,43 @@
     <div class="col-sm">
       <h6>Rekomendasi</h6>
       <hr />
-      <div class="card recommendation">
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <div>2019-05-09 / Dibuat Oleh Petambak / JUNIARTA MAHMUD</div>
-              <h6 class="font-weight-bold text-primary">SULAWESI BARAT</h6>
-              <div class="text-primary">MAMUJU UTARA</div>
-              <div>Panaeus vannamei</div>
-              <div>Harga Size 100 :</div>
-              <h4>Rp 39.000</h4>
+      <div v-for="n in shrimpPrices" :key="n.id">
+        <div class="card recommendation">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <div>{{ n.date }} / Dibuat Oleh Petambak / {{ n.creator.name }}</div>
+                <h6 class="font-weight-bold text-primary">{{ n.region.province_name }}</h6>
+                <div class="text-primary">{{ n.region.regency_name }}</div>
+                <div>{{ n.species.name }}</div>
+                <div>Harga Size 100 :</div>
+                <h4>Rp {{ n.size_100.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.") }}</h4>
+              </div>
+              <div class="col text-right">
+                <div>Penjual:</div>
+                <div>{{ n.creator.name }}</div>
+                <button class="btn btn-outline-primary btn-xs">LIHAT KONTAK</button>
+              </div>
             </div>
-            <div class="col text-right">
-              <div>Penjual:</div>
-              <div>JUNIARTA MAHMUD</div>
-              <button class="btn btn-outline-primary btn-xs">LIHAT KONTAK</button>
+            <router-link
+              class="btn btn-primary btn-sm btn-block"
+              :to="{name: 'Detail', params: { id: n.id}}"
+            >SEMUA SIZE</router-link>
+            <div class="text-center footer-icon">
+              <span>25 Share</span>
+              <span class>
+                <img src="../assets/icons/whatsapp.svg" class="image-icon" alt="whatsapp" />
+              </span>
+              <span>
+                <img src="../assets/icons/facebook.svg" class="image-icon" alt="facebook" />
+              </span>
+              <span>
+                <img src="../assets/icons/twitter.svg" class="image-icon" alt="twitter" />
+              </span>
+              <span>
+                <img src="../assets/icons/messenger.svg" class="image-icon" alt="messenger" />
+              </span>
             </div>
-          </div>
-          <a href="#" class="btn btn-primary btn-sm btn-block">SEMUA SIZE</a>
-          <div class="text-center footer-icon">
-            <span>25 Share</span>
-            <span class>
-              <img src="../assets/icons/whatsapp.svg" class="image-icon" alt="whatsapp" />
-            </span>
-            <span>
-              <img src="../assets/icons/facebook.svg" class="image-icon" alt="facebook" />
-            </span>
-            <span>
-              <img src="../assets/icons/twitter.svg" class="image-icon" alt="twitter" />
-            </span>
-            <span>
-              <img src="../assets/icons/messenger.svg" class="image-icon" alt="messenger" />
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="card recommendation">
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <div>2019-05-09 / Dibuat Oleh Petambak / JUNIARTA MAHMUD</div>
-              <h6 class="font-weight-bold text-primary">SULAWESI BARAT</h6>
-              <div class="text-primary">MAMUJU UTARA</div>
-              <div>Panaeus vannamei</div>
-              <div>Harga Size 100 :</div>
-              <h4>Rp 39.000</h4>
-            </div>
-            <div class="col text-right">
-              <div>Penjual:</div>
-              <div>JUNIARTA MAHMUD</div>
-              <button class="btn btn-outline-primary btn-xs">LIHAT KONTAK</button>
-            </div>
-          </div>
-          <a href="#" class="btn btn-primary btn-sm btn-block">SEMUA SIZE</a>
-          <div class="text-center footer-icon">
-            <span>25 Share</span>
-            <span class>
-              <img src="../assets/icons/whatsapp.svg" class="image-icon" alt="whatsapp" />
-            </span>
-            <span>
-              <img src="../assets/icons/facebook.svg" class="image-icon" alt="facebook" />
-            </span>
-            <span>
-              <img src="../assets/icons/twitter.svg" class="image-icon" alt="twitter" />
-            </span>
-            <span>
-              <img src="../assets/icons/messenger.svg" class="image-icon" alt="messenger" />
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="card recommendation">
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <div>2019-05-09 / Dibuat Oleh Petambak / JUNIARTA MAHMUD</div>
-              <h6 class="font-weight-bold text-primary">SULAWESI BARAT</h6>
-              <div class="text-primary">MAMUJU UTARA</div>
-              <div>Panaeus vannamei</div>
-              <div>Harga Size 100 :</div>
-              <h4>Rp 39.000</h4>
-            </div>
-            <div class="col text-right">
-              <div>Penjual:</div>
-              <div>JUNIARTA MAHMUD</div>
-              <button class="btn btn-outline-primary btn-xs">LIHAT KONTAK</button>
-            </div>
-          </div>
-          <a href="#" class="btn btn-primary btn-sm btn-block">SEMUA SIZE</a>
-          <div class="text-center footer-icon">
-            <span>25 Share</span>
-            <span class>
-              <img src="../assets/icons/whatsapp.svg" class="image-icon" alt="whatsapp" />
-            </span>
-            <span>
-              <img src="../assets/icons/facebook.svg" class="image-icon" alt="facebook" />
-            </span>
-            <span>
-              <img src="../assets/icons/twitter.svg" class="image-icon" alt="twitter" />
-            </span>
-            <span>
-              <img src="../assets/icons/messenger.svg" class="image-icon" alt="messenger" />
-            </span>
           </div>
         </div>
       </div>
@@ -186,7 +111,49 @@
   </div>
 </template>
 <script>
-export default {};
+import Api from "../api";
+export default {
+  data() {
+    return {
+      shrimpPriceDetail: "",
+      shrimpPrices: [],
+      listSize: []
+    };
+  },
+  methods: {
+    shrimpDetail(id) {
+      Api.shrimp_prices
+        .find(id)
+        .then(res => {
+          Api.shrimp_prices
+            .price()
+            .then(resp => {
+              this.shrimpPrices = resp.data.data;
+            })
+            .catch(error => {
+              throw error;
+              alert(error);
+            });
+          this.shrimpPriceDetail = res.data.data;
+          for (let key in res.data.data) {
+            /^size_\d+$/.test(key)
+              ? this.listSize.push({ name: key, price: res.data.data[key] })
+              : null;
+          }
+          console.log(this.listSize);
+        })
+        .catch(err => {
+          throw err;
+          alert(err);
+        });
+    }
+  },
+  mounted() {
+    var self = this;
+    var id = this.$route.params.id;
+    self.shrimpDetail(id);
+  }
+};
 </script>
 <style>
 .content {

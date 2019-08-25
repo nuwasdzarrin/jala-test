@@ -41,10 +41,12 @@
       </div>
       <div class="row left-content">
         <div class="card grafik-card">
-          <h5 class="card-header bg-white">Grafik harga udang</h5>
+          <div class="card-header bg-white">
+            <h5>Grafik harga udang</h5>
+            <span>JAWA TIMUR</span>
+          </div>
           <div class="card-body text-center">
-            <img src="../assets/img/grafik-udang.png" alt="grafik-udang" />
-            <p class="card-text">Silahkan Pilih Lokasi Untuk Menampilkan Grafik Harga Per Daerah</p>
+            <line-chart :datesPrice="pricesDate" :datesDate="monthPrice" v-if="pricesDate"></line-chart>
           </div>
         </div>
       </div>
@@ -111,6 +113,8 @@
 </template>
 <script>
 import Api from "../api";
+import LineChart from "../services/LineChart";
+import { parse } from "path";
 const mapMarker = require("../assets/icons/marker-purple.svg");
 export default {
   data() {
@@ -119,10 +123,12 @@ export default {
         url: mapMarker,
         scaledSize: { width: 150, height: 40, f: "px", b: "px" }
       },
-      markers: [],
       mapMark: [],
-      place: null,
       shrimpPrices: [],
+      pDate: [],
+      pricesDate: [],
+      monthPrice: [],
+      datesDate: [],
       filter: {
         search: "",
         with: "creator,species,region",
@@ -131,8 +137,13 @@ export default {
       }
     };
   },
+
+  components: {
+    "line-chart": LineChart
+  },
   methods: {
     generate() {
+      var self = this;
       for (let key in this.shrimpPrices) {
         this.mapMark.push({
           latLng: {
@@ -142,6 +153,8 @@ export default {
           price: this.shrimpPrices[key].size_100
         });
       }
+      console.log(this.mapMark);
+      self.sortPriceDate();
     },
     filterShrimpPrice() {
       var self = this;
@@ -161,10 +174,56 @@ export default {
           throw err;
           alert(err);
         });
+    },
+    sortPriceDate() {
+      var self = this;
+      this.pDate = this.shrimpPrices.sort(function(a, b) {
+        return new Date(a.date) - new Date(b.date);
+      });
+      self.myPriceDate();
+    },
+    myPriceDate() {
+      var self = this;
+      for (let key in this.pDate) {
+        this.datesDate.push(this.pDate[key].date);
+        this.pricesDate.push(this.pDate[key].size_100);
+      }
+      self.xAbsis();
+    },
+    xAbsis() {
+      var bln = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Agu",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Des"
+      ];
+      for (let key in this.datesDate) {
+        var mont = parseInt(this.datesDate[key].split("-")[1]);
+        var thn = parseInt(this.datesDate[key].split("-")[0]);
+        this.monthPrice.push(bln[mont - 1] + " " + thn);
+      }
+      console.log(this.monthPrice);
+    }
+  },
+  watch: {
+    "$route.params.id"(val) {
+      var self = this;
+      self.filter.region_id = this.$route.params.id;
+      self.filterShrimpPrice();
     }
   },
   mounted() {
-    this.filterShrimpPrice();
+    var self = this;
+    this.filter.region_id = this.$route.params.id;
+    self.filterShrimpPrice();
   }
 };
 </script>
