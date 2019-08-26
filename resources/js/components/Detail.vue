@@ -15,7 +15,7 @@
         <div class="body content-detail">
           <div class="row">
             <div class="col">
-              <div>03 May 2019</div>
+              <div>{{ shrimpPricesDetail.date }}</div>
               <div>Panaeus vannamei</div>
               <h6 class="font-weight-bold text-primary">JAWA TIMUR</h6>
               <div>SITUBONDO</div>
@@ -23,7 +23,8 @@
             <div class="col text-right">
               <div>Penjual:</div>
               <div>
-                <i class="fas fa-check-circle"></i>BUDI - SUPPLIER PDS
+                <i class="fas fa-check-circle"></i>
+                {{ shrimpPricesDetail.creator.name }}
               </div>
               <button class="btn btn-outline-primary btn-xs">LIHAT KONTAK</button>
             </div>
@@ -115,9 +116,15 @@ import Api from "../api";
 export default {
   data() {
     return {
-      shrimpPriceDetail: "",
+      shrimpPricesDetail: "",
       shrimpPrices: [],
-      listSize: []
+      listSize: [],
+      filter: {
+        search: "",
+        with: "creator,species,region",
+        sort: "size_100|creator.name,desc",
+        region_id: ""
+      }
     };
   },
   methods: {
@@ -125,8 +132,14 @@ export default {
       Api.shrimp_prices
         .find(id)
         .then(res => {
+          const params = {
+            search: this.filter.search,
+            with: this.filter.with,
+            sort: this.filter.sort,
+            region_id: this.filter.region_id
+          };
           Api.shrimp_prices
-            .price()
+            .filter(params)
             .then(resp => {
               this.shrimpPrices = resp.data.data;
             })
@@ -134,13 +147,12 @@ export default {
               throw error;
               alert(error);
             });
-          this.shrimpPriceDetail = res.data.data;
+          this.shrimpPricesDetail = res.data.data;
           for (let key in res.data.data) {
             /^size_\d+$/.test(key)
               ? this.listSize.push({ name: key, price: res.data.data[key] })
               : null;
           }
-          console.log(this.listSize);
         })
         .catch(err => {
           throw err;

@@ -1810,13 +1810,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      shrimpPriceDetail: "",
+      shrimpPricesDetail: "",
       shrimpPrices: [],
-      listSize: []
+      listSize: [],
+      filter: {
+        search: "",
+        "with": "creator,species,region",
+        sort: "size_100|creator.name,desc",
+        region_id: ""
+      }
     };
   },
   methods: {
@@ -1824,13 +1831,19 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       _api__WEBPACK_IMPORTED_MODULE_0__["default"].shrimp_prices.find(id).then(function (res) {
-        _api__WEBPACK_IMPORTED_MODULE_0__["default"].shrimp_prices.price().then(function (resp) {
+        var params = {
+          search: _this.filter.search,
+          "with": _this.filter["with"],
+          sort: _this.filter.sort,
+          region_id: _this.filter.region_id
+        };
+        _api__WEBPACK_IMPORTED_MODULE_0__["default"].shrimp_prices.filter(params).then(function (resp) {
           _this.shrimpPrices = resp.data.data;
         })["catch"](function (error) {
           throw error;
           alert(error);
         });
-        _this.shrimpPriceDetail = res.data.data;
+        _this.shrimpPricesDetail = res.data.data;
 
         for (var key in res.data.data) {
           /^size_\d+$/.test(key) ? _this.listSize.push({
@@ -1838,8 +1851,6 @@ __webpack_require__.r(__webpack_exports__);
             price: res.data.data[key]
           }) : null;
         }
-
-        console.log(_this.listSize);
       })["catch"](function (err) {
         throw err;
         alert(err);
@@ -71828,7 +71839,38 @@ var render = function() {
           "div",
           { staticClass: "body content-detail" },
           [
-            _vm._m(1),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col" }, [
+                _c("div", [_vm._v(_vm._s(_vm.shrimpPricesDetail.date))]),
+                _vm._v(" "),
+                _c("div", [_vm._v("Panaeus vannamei")]),
+                _vm._v(" "),
+                _c("h6", { staticClass: "font-weight-bold text-primary" }, [
+                  _vm._v("JAWA TIMUR")
+                ]),
+                _vm._v(" "),
+                _c("div", [_vm._v("SITUBONDO")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col text-right" }, [
+                _c("div", [_vm._v("Penjual:")]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("i", { staticClass: "fas fa-check-circle" }),
+                  _vm._v(
+                    "\n              " +
+                      _vm._s(_vm.shrimpPricesDetail.creator.name) +
+                      "\n            "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-outline-primary btn-xs" },
+                  [_vm._v("LIHAT KONTAK")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _vm._l(_vm.listSize, function(n) {
               return _c(
@@ -71859,9 +71901,9 @@ var render = function() {
               )
             }),
             _vm._v(" "),
-            _vm._m(2),
+            _vm._m(1),
             _vm._v(" "),
-            _vm._m(3)
+            _vm._m(2)
           ],
           2
         )
@@ -71941,7 +71983,7 @@ var render = function() {
                     [_vm._v("SEMUA SIZE")]
                   ),
                   _vm._v(" "),
-                  _vm._m(4, true)
+                  _vm._m(3, true)
                 ],
                 1
               )
@@ -71968,37 +72010,6 @@ var staticRenderFns = [
           _c("button", { staticClass: "btn btn-primary btn-xs float-right" }, [
             _vm._v("SEMUA HARGA")
           ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col" }, [
-        _c("div", [_vm._v("03 May 2019")]),
-        _vm._v(" "),
-        _c("div", [_vm._v("Panaeus vannamei")]),
-        _vm._v(" "),
-        _c("h6", { staticClass: "font-weight-bold text-primary" }, [
-          _vm._v("JAWA TIMUR")
-        ]),
-        _vm._v(" "),
-        _c("div", [_vm._v("SITUBONDO")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col text-right" }, [
-        _c("div", [_vm._v("Penjual:")]),
-        _vm._v(" "),
-        _c("div", [
-          _c("i", { staticClass: "fas fa-check-circle" }),
-          _vm._v("BUDI - SUPPLIER PDS\n            ")
-        ]),
-        _vm._v(" "),
-        _c("button", { staticClass: "btn btn-outline-primary btn-xs" }, [
-          _vm._v("LIHAT KONTAK")
         ])
       ])
     ])
